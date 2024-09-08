@@ -1,5 +1,8 @@
 use std::io::{self, Write};
 
+//BLANCO NAVAREZ PANGILINAN
+//A222
+
 #[derive(Debug, Clone)]
 enum TokenType {
     Word,
@@ -105,6 +108,11 @@ fn main() {
     let mut input = String::new();
     io::stdin().read_line(&mut input).unwrap();
     let input = input.trim();
+
+    if input.is_empty() {
+        println!("No input provided.");
+        return;
+    }
 
     let tokens = tokenize(input);
     println!("Phase 1 Output:");
