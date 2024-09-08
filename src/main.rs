@@ -1,10 +1,10 @@
-use std::io::{self, Write};
+use std::io::{self, Write}; //import an input/output library in rust
 
 //BLANCO NAVAREZ PANGILINAN
 //A222
 
 #[derive(Debug, Clone)]
-enum TokenType {
+enum TokenType {//enumerating token types
     Word,
     Whitespace,
     Operator,
@@ -15,31 +15,31 @@ enum TokenType {
 }
 
 #[derive(Debug, Clone)]
-struct Token {
+struct Token { //identify the data type of each variable
     token: String,
     token_type: TokenType,
 }
 
-fn classify_token(token: &str) -> TokenType {
+fn classify_token(token: &str) -> TokenType { //this is where we classify the token to its type
     if token.is_empty() {
         return TokenType::EndOfLine;
     }
     if token.chars().all(char::is_alphabetic) {
-        TokenType::Word
+        TokenType::Word //if its a word
     } else if token.chars().all(char::is_whitespace) {
-        TokenType::Whitespace
+        TokenType::Whitespace //an empty space
     } else if token.chars().all(|c| "+-*/=<>".contains(c)) {
-        TokenType::Operator
+        TokenType::Operator//an operator
     } else if token.chars().all(char::is_numeric) {
-        TokenType::Number
+        TokenType::Number // a number
     } else if token.chars().all(|c| c.is_ascii_punctuation()) {
-        TokenType::Punctuation
-    } else {
+        TokenType::Punctuation// a punctuation 
+    } else { // or unknown
         TokenType::Unknown
     }
 }
 
-fn tokenize(input: &str) -> Vec<Token> {
+fn tokenize(input: &str) -> Vec<Token> { // tokenizes a string then outputs the vector
     const DELIMITERS: &str = "= \n";
     let mut tokens: Vec<Token> = Vec::new();
     let mut current_token = String::new();
@@ -75,7 +75,8 @@ fn tokenize(input: &str) -> Vec<Token> {
         }
     }
 
-    if !current_token.is_empty() {
+    if !current_token.is_empty() { 
+        // If the current token is not empty, it is classified, added to the tokens vector, and current_token is cleared.
         let token_type = classify_token(&current_token);
         tokens.push(Token {
             token: current_token,
@@ -83,10 +84,11 @@ fn tokenize(input: &str) -> Vec<Token> {
         });
     }
 
-    tokens
+    tokens 
 }
 
-fn gran_breakdown(tokens: Vec<Token>) -> Vec<(String, String)> {
+fn gran_breakdown(tokens: Vec<Token>) -> Vec<(String, String)> { 
+    //it creates a string showing each character in the token
     let mut breakdown_vec = Vec::new();
 
     for token in tokens {
@@ -102,7 +104,9 @@ fn gran_breakdown(tokens: Vec<Token>) -> Vec<(String, String)> {
     breakdown_vec
 }
 
-fn main() {
+fn main() { 
+    //main method
+    //ask user input and outputs the tokenized output
     print!("Enter the string to tokenize: ");
     io::stdout().flush().unwrap();
     let mut input = String::new();
@@ -129,7 +133,7 @@ fn main() {
         println!("Token: \"{}\" - Type: {}", token.token, token_type);
     }
 
-    let breakdown = gran_breakdown(tokens.clone());
+    let breakdown = gran_breakdown(tokens.clone()); // calls gran to output phase 2 
     println!("\nPhase 2 Output (Granular Breakdown):");
     for (token, breakdown) in breakdown {
         println!("Token: \"{}\" -> {}", token, breakdown);
